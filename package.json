@@ -1,0 +1,14 @@
+{
+  "name": "tnode",
+  "version": "1.0.0",
+  "description": "framework to show and search data on US map",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Prajwal Kedilaya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
