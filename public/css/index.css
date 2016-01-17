@@ -1,0 +1,120 @@
+/*
+ul{
+    list-style-type: none;
+    padding:0; 
+    margin:0;
+}
+
+#map {
+     //width and height are set in js 
+    float:left;
+    margin:0;
+}
+
+h1 {
+    display:inline;
+}
+
+form {
+    display:inline;
+}
+*/
+
+body{
+    background-color: #8E2800;
+}
+
+/*
+#stream {
+    float: right;
+    width: 25%;
+    background color and height needed
+}
+*/
+
+svg {
+    border-top: 1px solid #FFF0A5;
+    fill: transparent;
+}
+/* color for market areas */
+
+/*
+    .western {
+        fill: cadetblue;
+    }
+
+    .eastern {
+        fill: royalblue;
+    }
+
+    .southeastern {
+        fill: skyblue;
+    }
+
+    .south-central {
+        fill: darkcyan;
+    }
+
+    .north-central {
+        fill: turquoise;
+    }
+
+    .west-central {
+        fill: steelblue;
+    }
+
+    .florida {
+        fill: cornflowerblue;
+    }
+*/
+
+/* map interaction */
+
+    #states {
+        fill: #FFF0A5;
+/*        fill: rgb(89, 8, 2); */
+    }
+    
+    #states .active {
+        /*  hide when selected  */
+        display: none;
+    }
+    
+    #state-borders {
+        /* non-responsive black stroke */
+        fill: none;
+        stroke: black;
+        stroke-width: .5px;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+        pointer-events: none;
+    }
+    
+    .county-boundary {
+        /*  white fill  */
+        fill: #FFF0A5;
+        /*  black border  */
+        stroke: black;
+    }
+    
+    .county-boundary:hover, .state:hover {
+        /*  orange fill  */
+        fill: orange;
+    }
+
+/* circles for tweets */
+    circle {
+        stroke: white;
+        stroke-width:.1;
+        fill: #468966;
+    }
+
+    circle.active {
+        /*  hide when selected  */
+        display: none;
+    }
+
+/*
+body {
+    background: white url("images/area.gif") no-repeat right bottom;
+}*/
