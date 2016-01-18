@@ -2,7 +2,6 @@
 var express = require('express');
 var router = express.Router();
 
-
 //Model
 var Tweet = require('../models/tweet');
 
@@ -16,7 +15,7 @@ router.get('/', function (req, res) {
 
 //Define the about route
 router.get('/about', function(req, res) {
-  res.send('About this api');
+  res.send('About this view nephew');
 });
 
 //Provide router
