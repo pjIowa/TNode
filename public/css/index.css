@@ -1,72 +1,11 @@
-/*
-ul{
-    list-style-type: none;
-    padding:0; 
-    margin:0;
-}
-
-#map {
-     //width and height are set in js 
-    float:left;
-    margin:0;
-}
-
-h1 {
-    display:inline;
-}
-
-form {
-    display:inline;
-}
-*/
-
 body{
     background-color: #8E2800;
 }
 
-/*
-#stream {
-    float: right;
-    width: 25%;
-    background color and height needed
-}
-*/
-
 svg {
-    border-top: 1px solid #FFF0A5;
+/*    border-top: 1px solid #FFF0A5;*/
     fill: transparent;
 }
-/* color for market areas */
-
-/*
-    .western {
-        fill: cadetblue;
-    }
-
-    .eastern {
-        fill: royalblue;
-    }
-
-    .southeastern {
-        fill: skyblue;
-    }
-
-    .south-central {
-        fill: darkcyan;
-    }
-
-    .north-central {
-        fill: turquoise;
-    }
-
-    .west-central {
-        fill: steelblue;
-    }
-
-    .florida {
-        fill: cornflowerblue;
-    }
-*/
 
 /* map interaction */
 
@@ -101,20 +40,3 @@ svg {
         /*  orange fill  */
         fill: orange;
     }
-
-/* circles for tweets */
-    circle {
-        stroke: white;
-        stroke-width:.1;
-        fill: #468966;
-    }
-
-    circle.active {
-        /*  hide when selected  */
-        display: none;
-    }
-
-/*
-body {
-    background: white url("images/area.gif") no-repeat right bottom;
-}*/
