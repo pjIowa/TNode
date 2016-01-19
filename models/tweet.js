@@ -1,17 +1,11 @@
 //Dependencies
-var restful = require('node-restful');
-var mongoose = restful.mongoose;
+var pg = require('pg');
 
-//Schema
-var tweetSchema = new mongoose.Schema({
-    text : String,
-    unixtime: Number,
-    latitude: Number,
-    longitude: Number,
-    countyId: Number,
-    stateId: Number,
-    userId: String
-});
+//Start DB
+var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/tweets';
+var client = new pg.Client(connectionString);
+client.connect();
 
-//Provide model
-module.exports = restful.model('Tweets', tweetSchema);
+//Create Table
+var query = client.query('CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(140), unixtime BIGINT, latitude NUMERIC, longitude NUMERIC, countyId SMALLINT, stateId SMALLINT, userId TEXT)');
+query.on('end', function() { client.end(); });
