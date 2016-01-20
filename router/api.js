@@ -1,16 +1,25 @@
 //Dependencies
 var express = require('express');
-var router = express.Router();
 var pg = require('pg');
+var path = require('path');
+var fs = require('fs');
 
-//Model
-//var Tweet = require('../models/tweet');
-//
-//Tweet.methods(['get','put','post','delete']);
-//Tweet.register(router, '/tweets')
+//Create Router
+var router = express.Router();
 
-//Database
-var connectionString = require(path.join(__dirname, '../', '../', 'config'));
+//Load credentials for DB
+var connectionString = 'postgres://'
+fs.readFile(path.join(__dirname, 'credentials.json'), function (error,data) {
+    if (error){
+        throw error;
+    }
+        
+    if (data) {
+        var jsonContent = JSON.parse(data);
+        connectionString += jsonContent.username + ':' + jsonContent.password;
+        connectionString += '@localhost/' + jsonContent.dbname;
+    }
+});
 
 //Define the home page route
 router.get('/', function (req, res) {
@@ -22,12 +31,9 @@ router.get('/about', function(req, res) {
   res.send('About this view nephew');
 });
 
-router.post('/tweets', function(req, res) {
+router.get('/tweets', function(req, res) {
 
     var results = [];
-
-    // Grab data from http request
-    var data = {text: req.body.text, complete: false};
 
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
@@ -38,11 +44,8 @@ router.post('/tweets', function(req, res) {
           return res.status(500).json({ success: false, data: err});
         }
 
-        // SQL Query > Insert Data
-        client.query("INSERT INTO items(text, complete) values($1, $2)", [data.text, data.complete]);
-
         // SQL Query > Select Data
-        var query = client.query("SELECT * FROM items ORDER BY id ASC");
+        var query = client.query("SELECT * FROM tweet ORDER BY id ASC");
 
         // Stream results back one row at a time
         query.on('row', function(row) {
@@ -54,8 +57,6 @@ router.post('/tweets', function(req, res) {
             done();
             return res.json(results);
         });
-
-
     });
 });
 

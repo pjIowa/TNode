@@ -1,12 +1,8 @@
 //Dependencies
 var express = require('express');
-var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 var path = require('path');
-
-//MongoDB database
-mongoose.connect('mongodb://localhost/rest_test');
 
 var app = express();
 
