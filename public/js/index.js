@@ -1,7 +1,35 @@
+
+
+//currently selected state, county
+var selectedStateID = 0, selectedCountyID = 0;
+
+//indices
+var i, sid, cid;
+
+//id mappings
+var idToName = {};
+var idToMarketArea = {};
+
+//constants
+var infoBox, infoWidth = 300;
+var aspectRatio = 0.4;
+var scaleRatio = 0.85;
+var sidebarRatio = 1;
+
+var countyGeoJSON;
+var stateGeoJSON;
+var stateBorderGeoJSON;
+
+var m_width, width, height;
+
+var projection;
+var path;
+var svg;
+var g, gPins;
+
 /*
     INITIALIZER
 */
-
 queue()
     .defer(d3.json, 'http://localhost:3000/data/us.json')
     .defer(d3.csv, 'http://localhost:3000/data/mkareas.csv')
@@ -15,21 +43,7 @@ function countyIn50States(elem) {
 
 function baseMap(error, us, marketVectors, fipsVectors) {
     "use strict";
-    console.log('basemap');
     if (error) { console.warn(error); }
-
-    //indices
-    var i, sid, cid;
-    
-    //id mappings
-    var idToName = {};
-    var idToMarketArea = {};
-    
-    //constants
-    var infoBox, infoWidth = 300;
-    var aspectRatio = 0.4;
-    var scaleRatio = 0.85;
-    var sidebarRatio = 1;
     
     //create market area mappings
     for (i = 0; i < marketVectors.length; i++) {
@@ -46,30 +60,30 @@ function baseMap(error, us, marketVectors, fipsVectors) {
     }
     
     //county shapes in 50 states
-    var countyGeoJSON = topojson.feature(us, us.objects.counties).features.filter(countyIn50States);
+    countyGeoJSON = topojson.feature(us, us.objects.counties).features.filter(countyIn50States);
     
     //all state shapes
-    var stateGeoJSON = topojson.feature(us, us.objects.states).features;
+    stateGeoJSON = topojson.feature(us, us.objects.states).features;
     
     //interior facing borders of states
-    var stateBorderGeoJSON = topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; });
+    stateBorderGeoJSON = topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; });
     
     //size of map
-    var m_width = document.getElementById("map").offsetWidth;
-    var width = 938;
-    var height = 500;
+    m_width = document.getElementById("map").offsetWidth;
+    width = 938;
+    height = 500;
     
     //projection and map size
-    var projection = d3.geo.albersUsa()
+    projection = d3.geo.albersUsa()
         .scale(width * scaleRatio)
         .translate([width * sidebarRatio / 2, height / 2]);
     
     //path for projection
-    var path = d3.geo.path()
+    path = d3.geo.path()
         .projection(projection);
     
     //add svg to body
-    var svg = d3.select("#map").append("svg")
+    svg = d3.select("#map").append("svg")
         .attr("preserveAspectRatio", "xMidYMid")
         .attr("viewBox", "0 0 " + width + " " + height)
         .attr("width", m_width)
@@ -79,11 +93,12 @@ function baseMap(error, us, marketVectors, fipsVectors) {
     svg.append("rect")
         .attr("class", "background")
         .attr("width", "100%")
-        .attr("height", "100%");
+        .attr("height", "100%")
+        .on("click", clicked);
     
     //add object container to svg
-    var g = svg.append("g");
-    var gPins = svg.append("g");
+    g = svg.append("g");
+    gPins = svg.append("g");
     
     //add county shapes container to container
     g.append("g")
@@ -92,7 +107,8 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .data(countyGeoJSON)
         .enter().append("path")
         .attr("d", path)
-        .attr("class", "county-boundary");
+        .attr("class", "county-boundary")
+        .on("click", clicked);
     
     //add state shapes container to container
     g.append("g")
@@ -101,7 +117,8 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .data(stateGeoJSON)
         .enter().append("path")
         .attr("d", path)
-        .attr("class", function (d) { return "state " + idToMarketArea[d.id]; });
+        .attr("class", function (d) { return "state " + idToMarketArea[d.id]; })
+        .on("click", clicked);
     
     //add state borders container to container
     g.append("path")
@@ -110,4 +127,80 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .attr("d", path);
 }
 
+function clicked(obj) {
+    "use strict";
+    if (obj) {
+        if ((obj.id < 1000) && (selectedStateID !== obj.id)) {//state clicked 
+            hideCounties();
+            selectedStateID = obj.id;
+            showCounties();
+            zoomIntoObject(obj);
+        } else if (selectedCountyID !== obj.id) {//county clicked
+            selectedCountyID = obj.id;
+            zoomIntoObject(obj);
+        } else {//county clicked twice
+            hideCounties();
+            revertToInitial();
+        }
+    } else {//background clicked
+        revertToInitial();
+    }
+}
 
+function zoomIntoObject(obj) {
+    "use strict";
+        //get x,y
+    var centroid = path.centroid(obj),
+    x = centroid[0],
+    y = centroid[1],
+    bounds = path.bounds(obj),
+    dx = bounds[1][0] - bounds[0][0],
+    dy = bounds[1][1] - bounds[0][1],
+    k = 0.9 / Math.max(dx / width, dy / height);
+        
+    //perform animation
+    animateMap(x,y,k);
+}
+
+function revertToInitial() {
+    "use strict";
+    var x, y, k;
+    //get center of us map
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    
+    //hide counties
+    hideCounties();
+    
+    //reset id's
+    selectedStateID = 0;
+    selectedCountyID = 0;
+    
+    //perform animation
+    animateMap(x,y,k);
+}
+
+function animateMap(x,y,k) {
+    "use strict";
+    
+    //translate and resize map
+    g.transition()
+        .duration(500)
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+}
+
+function hideCounties() {
+    "use strict";
+    g.selectAll("path")
+        .filter(function (d) { return (d.id === selectedStateID); })
+        .classed("active", false);
+}
+    
+function showCounties() {
+    "use strict";
+    g.selectAll("path")
+        .filter(function (d) { return (d.id === selectedStateID); })
+        .classed("active", true);
+}

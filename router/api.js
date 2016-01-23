@@ -9,7 +9,7 @@ var router = express.Router();
 
 //Load credentials for DB
 var connectionString = 'postgres://'
-fs.readFile(path.join(__dirname, 'credentials.json'), function (error,data) {
+fs.readFile(path.join(__dirname, 'credentialsDB.json'), function (error,data) {
     if (error){
         throw error;
     }
