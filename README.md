@@ -18,5 +18,6 @@
 # Usage Steps
 * Notes to get Twitter API credentials
 * Notes on adding credentialsDB and credentialsTwitter
+* Note to run npm install
 * Notes to run Node app
 * Notes to replace Twitter data source
