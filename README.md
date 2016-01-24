@@ -21,3 +21,9 @@
 * Note to run npm install
 * Notes to run Node app
 * Notes to replace Twitter data source
+
+# Sources
+* Tooltip JS & CSS: http://cpettitt.github.io/project/dagre-d3/latest/demo/hover.html
+* Adjusting Points on Zoom: http://jsfiddle.net/o3dxgfuu/12/
+* Zoom into State: http://bl.ocks.org/mbostock/2206590
+
