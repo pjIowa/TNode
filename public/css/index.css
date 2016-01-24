@@ -40,3 +40,11 @@ svg {
         /*  orange fill  */
         fill: orange;
 }
+
+circle {
+	fill: rgba(245, 15, 15, 0.42);
+}
+
+circle:hover {
+  fill: #ff0000;
+}

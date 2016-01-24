@@ -94,7 +94,7 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .attr("class", "background")
         .attr("width", "100%")
         .attr("height", "100%")
-        .on("click", clicked);
+        .on("click", clickedMap);
     
     //add object container to svg
     g = svg.append("g");
@@ -108,7 +108,7 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .enter().append("path")
         .attr("d", path)
         .attr("class", "county-boundary")
-        .on("click", clicked);
+        .on("click", clickedMap);
     
     //add state shapes container to container
     g.append("g")
@@ -118,7 +118,7 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .enter().append("path")
         .attr("d", path)
         .attr("class", function (d) { return "state " + idToMarketArea[d.id]; })
-        .on("click", clicked);
+        .on("click", clickedMap);
     
     //add state borders container to container
     g.append("path")
@@ -127,7 +127,27 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .attr("d", path);
 }
 
-function clicked(obj) {
+function plotPoints(data){
+    svg.selectAll("circle")
+        .transition()
+        .delay(function(d, i) { return i * 2; })
+        .attr("r", 0)
+        .remove()
+    
+    gPins.selectAll(".pin") // add circles to new g element
+        .data(data)
+        .enter().append("circle", ".pin")
+        .attr("transform", function(d) { 
+        return "translate(" + projection([d.longitude,d.latitude]) + ")"; 
+    })
+        .attr("r", 0 )
+        .transition()
+        .duration(500)
+        .delay(function(d, i) { return i * 5; })
+        .attr("r", 1.0 );
+}
+
+function clickedMap(obj) {
     "use strict";
     if (obj) {
         if ((obj.id < 1000) && (selectedStateID !== obj.id)) {//state clicked 
@@ -189,6 +209,21 @@ function animateMap(x,y,k) {
         .duration(500)
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
         .style("stroke-width", 1.5 / k + "px");
+}
+
+function animatePoints(x,y,k) {
+    "use strict";
+    
+    //translate and resize grid map
+    gPins.transition()
+        .duration(500)
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+    
+    //resize point itself
+    gPins.selectAll("circle")
+        .transition()
+        .duration(500)
+        .attr("r", 5.0 / k);
 }
 
 function hideCounties() {
