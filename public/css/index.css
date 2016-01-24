@@ -1,3 +1,5 @@
+/* BACKGROUND */
+
 body{
     background-color: black;
 }
@@ -7,7 +9,7 @@ svg {
     fill: transparent;
 }
 
-/* map interaction */
+/* MAP AREAS */
 
 #states {
         fill: white;
@@ -41,10 +43,33 @@ svg {
         fill: orange;
 }
 
+/* POINTS */
+
 circle {
 	fill: rgba(245, 15, 15, 0.42);
 }
 
 circle:hover {
   fill: #ff0000;
+}
+
+/* TOOLTIP */
+
+text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 14px;
+}
+
+/* This styles the title of the tooltip */
+.tipsy .name {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #60b1fc;
+  margin: 0;
+}
+
+/* This styles the body of the tooltip */
+.tipsy .description {
+  font-size: 1.2em;
 }

@@ -27,6 +27,8 @@ var path;
 var svg;
 var g, gPins;
 
+var mouseX, mouseY;
+
 /*
     INITIALIZER
 */
@@ -35,6 +37,16 @@ queue()
     .defer(d3.csv, 'http://localhost:3000/data/mkareas.csv')
     .defer(d3.csv, 'http://localhost:3000/data/us-fips-codes.csv')
     .await(baseMap);
+
+$(document).mousemove(function(e) {
+    mouseX = e.pageX;
+    mouseY = e.pageY;
+}).mouseover();
+
+// Simple function to style the tooltip for the given node.
+var styleTooltip = function(name, description) {
+  return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
+};
 
 function countyIn50States(elem) {
     "use strict";
@@ -108,6 +120,8 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .enter().append("path")
         .attr("d", path)
         .attr("class", "county-boundary")
+        .attr("title", function(v) { return styleTooltip("dack","ye") })
+        .each(function(v) { $(this).tipsy({ gravity: "w", opacity: 1, html: true }); })
         .on("click", clickedMap);
     
     //add state shapes container to container
