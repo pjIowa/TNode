@@ -1,3 +1,4 @@
 credentialsDB.json
 credentialsTwitter.json
 node_modules/
+.DS_Store
