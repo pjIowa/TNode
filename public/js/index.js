@@ -1,4 +1,4 @@
-
+/* GLOBAL VARIABLES */
 
 //currently selected state, county
 var selectedStateID = 0, selectedCountyID = 0;
@@ -8,7 +8,6 @@ var i, sid, cid;
 
 //id mappings
 var idToName = {};
-var idToMarketArea = {};
 
 //constants
 var infoBox, infoWidth = 300;
@@ -16,45 +15,43 @@ var aspectRatio = 0.4;
 var scaleRatio = 0.85;
 var sidebarRatio = 1;
 
+//JSON structures for building map
 var countyGeoJSON;
 var stateGeoJSON;
 var stateBorderGeoJSON;
 
+//map size params
 var m_width, width, height;
 
-var projection;
-var path;
-var svg;
-var g, gPins;
+//detail view params
+var detailViewParams = function () {
+    var detailScale = .25;
+    return {
+        w: width*detailScale,
+        h: height*detailScale,
+        x: width-width*detailScale,
+        y: height-height*detailScale
+    };
+}
 
-/*
-    INITIALIZER
-*/
+//map manipulators
+var projection, path, svg, g, gPins;
+
+/* INITIALIZER */
+
 queue()
     .defer(d3.json, 'http://localhost:3000/data/us.json')
-    .defer(d3.csv, 'http://localhost:3000/data/mkareas.csv')
     .defer(d3.csv, 'http://localhost:3000/data/us-fips-codes.csv')
     .await(baseMap);
-
-// Simple function to style the tooltip for the given node.
-var styleTooltip = function(name, description) {
-  return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
-};
 
 function countyIn50States(elem) {
     "use strict";
     return elem.id < 70000;
 }
 
-function baseMap(error, us, marketVectors, fipsVectors) {
+function baseMap(error, us, fipsVectors) {
     "use strict";
     if (error) { console.warn(error); }
-    
-    //create market area mappings
-    for (i = 0; i < marketVectors.length; i++) {
-        sid = parseInt(marketVectors[i].state_id, 10);
-        idToMarketArea[sid] = marketVectors[i].mk_area;
-    }
     
     //create name mappings
     for (i = 0; i < fipsVectors.length; i++) {
@@ -113,6 +110,8 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .enter().append("path")
         .attr("d", path)
         .attr("class", "county-boundary")
+        .on("mouseover", mouseOverMap)
+        .on("mouseout", mouseOutMap)
         .on("click", clickedMap);
     
     //add state shapes container to container
@@ -122,9 +121,9 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .data(stateGeoJSON)
         .enter().append("path")
         .attr("d", path)
-        .attr("class", function (d) { return "state " + idToMarketArea[d.id]; })
-        .attr("title", function(d) { return styleTooltip(idToName[d.id],"...") })
-        .each(function(v) { $(this).tipsy({ gravity: "w", opacity: 1, html: true }); })
+        .attr("class", "state")
+        .on("mouseover", mouseOverMap)
+        .on("mouseout", mouseOutMap)
         .on("click", clickedMap);
     
     //add state borders container to container
@@ -132,27 +131,44 @@ function baseMap(error, us, marketVectors, fipsVectors) {
         .datum(stateBorderGeoJSON)
         .attr("id", "state-borders")
         .attr("d", path);
+    
+    var detailParams = detailViewParams();
+    
+    svg.append("rect")
+        .attr("class", "detail")
+        .attr("width", detailParams.w)
+        .attr("height", detailParams.h)
+        .attr("x", detailParams.x)
+        .attr("y", detailParams.y);
+    
+    svg.append("text")
+        .attr("class", "title")
+        .attr("width", detailParams.w)
+        .attr("height", detailParams.h)
+        .attr("x", detailParams.x+10)
+        .attr("y", detailParams.y+25)
+        .text("Touch the map!");
+    
+     var textBox = svg.append("text")
+        .attr("width", detailParams.w)
+        .attr("height", detailParams.h)
+        .attr("x", detailParams.x+10)
+        .attr("y", detailParams.y+45)
+     
+        textBox.append('svg:tspan')
+        .attr("class", "description_1")
+        .attr('x', detailParams.x+10)
+        .attr('dy', 10)
+        .text("do it.")
+     
+        textBox.append('svg:tspan')
+        .attr("class", "description_2")
+        .attr('x', detailParams.x+10)
+        .attr('dy', 20)
+        .text("get to tha choppa.");
 }
 
-function plotPoints(data){
-    svg.selectAll("circle")
-        .transition()
-        .delay(function(d, i) { return i * 2; })
-        .attr("r", 0)
-        .remove()
-    
-    gPins.selectAll(".pin") // add circles to new g element
-        .data(data)
-        .enter().append("circle", ".pin")
-        .attr("transform", function(d) { 
-        return "translate(" + projection([d.longitude,d.latitude]) + ")"; 
-    })
-        .attr("r", 0 )
-        .transition()
-        .duration(500)
-        .delay(function(d, i) { return i * 5; })
-        .attr("r", 1.0 );
-}
+/* USER INTERACTION */
 
 function clickedMap(obj) {
     "use strict";
@@ -173,6 +189,56 @@ function clickedMap(obj) {
         revertToInitial();
     }
 }
+
+function mouseOverMap(obj) {
+    d3.select('.title').text(idToName[obj.id]);
+    d3.selectAll('.description_1').text('clicked on a ');
+    if (obj.id < 1000) {
+        d3.selectAll('.description_2').text('state');
+    }
+    else {
+        d3.selectAll('.description_2').text('county');
+    }
+    
+}
+
+function mouseOutMap(obj) {
+    d3.select('.title').text("Touch the map!");
+    d3.selectAll('.description_1').text('');
+    d3.selectAll('.description_2').text('');
+}
+
+
+var styleTooltip = function(name, description) {
+    return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
+};
+
+/* POINTS */
+
+function plotPoints(data) {
+    "use strict";
+    svg.selectAll("circle")
+        .transition()
+        .delay(function(d, i) { return i * 2; })
+        .attr("r", 0)
+        .remove()
+    
+    gPins.selectAll(".pin") // add circles to new g element
+        .data(data)
+        .enter().append("circle", ".pin")
+        .attr("transform", function(d) { 
+        return "translate(" + projection([d.longitude,d.latitude]) + ")"; 
+    })
+        .attr("r", 0 )
+        .transition()
+        .duration(500)
+        .delay(function(d, i) { return i * 5; })
+        .attr("r", 1.0 );
+}
+
+
+
+/* UI HELPERS */
 
 function zoomIntoObject(obj) {
     "use strict";
@@ -206,6 +272,11 @@ function revertToInitial() {
     
     //perform animation
     animateMap(x,y,k);
+    
+    //reset detail
+    d3.select('.title').text("Touch the map!");
+    d3.selectAll('.description_1').text('');
+    d3.selectAll('.description_2').text('');
 }
 
 function animateMap(x,y,k) {

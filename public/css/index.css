@@ -5,7 +5,7 @@ body{
 }
 
 svg {
-/*    border-top: 1px solid #FFF0A5;*/
+    border: 1px solid white;
     fill: transparent;
 }
 
@@ -53,23 +53,31 @@ circle:hover {
   fill: #ff0000;
 }
 
-/* TOOLTIP */
+/* DETAIL */
 
 text {
-  font-weight: 300;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
-  font-size: 14px;
-}
+    font-weight: 300;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+    font-size: 14px;
+    fill: white;
+ }
 
-/* This styles the title of the tooltip */
-.tipsy .name {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #60b1fc;
-  margin: 0;
-}
+.title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #60b1fc;
+    margin: 0;
+ }
+ 
+.description_1, .description_2 {
+    font-size: 1.2em;
+ }
 
-/* This styles the body of the tooltip */
-.tipsy .description {
-  font-size: 1.2em;
+
+.detail {
+    fill: black;
+    opacity: .9;
+    stroke: white;
+    stroke-width: 2;
+    font-size: 90%;
 }
