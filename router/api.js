@@ -45,7 +45,65 @@ router.get('/tweets', function(req, res) {
         }
 
         // SQL Query > Select Data
-        var query = client.query("SELECT * FROM tweet ORDER BY id ASC");
+        var query = client.query("select text, countyid, stateid from tweet order by id asc");
+
+        // Stream results back one row at a time
+        query.on('row', function(row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function() {
+            done();
+            return res.json(results);
+        });
+    });
+});
+
+router.get('/relStateAvg', function(req, res) {
+    
+    var results = [];
+    
+    // Get a Postgres client from the connection pool
+    pg.connect(connectionString, function(err, client, done) {
+        // Handle connection errors
+        if(err) {
+          done();
+          console.log(err);
+          return res.status(500).json({ success: false, data: err});
+        }
+
+        // SQL Query > Select Data
+        var query = client.query("select stateid, cast(count(*)*(select count(distinct stateid) from tweet) as float)/cast((select count(*) from tweet) as float) as relcount from tweet group by stateid order by relcount;");
+
+        // Stream results back one row at a time
+        query.on('row', function(row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function() {
+            done();
+            return res.json(results);
+        });
+    });
+});
+
+router.get('/relCountyAvg', function(req, res) {
+    
+    var results = [];
+    
+    // Get a Postgres client from the connection pool
+    pg.connect(connectionString, function(err, client, done) {
+        // Handle connection errors
+        if(err) {
+          done();
+          console.log(err);
+          return res.status(500).json({ success: false, data: err});
+        }
+
+        // SQL Query > Select Data
+        var query = client.query("select countyid, cast(count(*)*(select count(distinct countyid) from tweet) as float)/cast((select count(*) from tweet) as float) as relcount from tweet group by countyid order by relcount;");
 
         // Stream results back one row at a time
         query.on('row', function(row) {
