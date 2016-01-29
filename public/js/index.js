@@ -61,6 +61,10 @@ function baseMap(error, us, fipsVectors) {
         idToName[sid] = fipsVectors[i].state;
     }
     
+    var quantize = d3.scale.quantize()
+    .domain([0, .15])
+    .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
+    
     //county shapes in 50 states
     countyGeoJSON = topojson.feature(us, us.objects.counties).features.filter(countyIn50States);
     
@@ -109,11 +113,10 @@ function baseMap(error, us, fipsVectors) {
         .data(countyGeoJSON)
         .enter().append("path")
         .attr("d", path)
-        .attr("class", "county-boundary")
+        .attr("class", "county-boundary "+quantize(.10))
         .on("mouseover", mouseOverMap)
         .on("mouseout", mouseOutMap)
         .on("click", clickedMap);
-    
     //add state shapes container to container
     g.append("g")
         .attr("id", "states")
@@ -121,7 +124,7 @@ function baseMap(error, us, fipsVectors) {
         .data(stateGeoJSON)
         .enter().append("path")
         .attr("d", path)
-        .attr("class", "state")
+        .attr("class", "state "+quantize(.15))
         .on("mouseover", mouseOverMap)
         .on("mouseout", mouseOutMap)
         .on("click", clickedMap);
