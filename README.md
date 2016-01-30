@@ -24,7 +24,7 @@
 
 # Usage Steps
 * The app uses data from the Twitter API, here are steps to get credential to use it:
-..1. Link to get credentials: https://apps.twitter.com/
+⋅⋅1. Link to get credentials: https://apps.twitter.com/
 * Notes on adding credentialsDB and credentialsTwitter
 * Note to run npm install
 * Notes to run Node app
