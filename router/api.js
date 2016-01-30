@@ -53,7 +53,7 @@ router.get('/tweets', function(req, res) {
     });
 });
 
-router.get('/relStateAvg', function(req, res) {
+router.get('/stateCounts', function(req, res) {
     var results = [];
     pg.connect(connectionString, function(err, client, done) {
         if(err) {
@@ -62,9 +62,9 @@ router.get('/relStateAvg', function(req, res) {
           return res.status(500).json({ success: false, data: err});
         }
         
-        //goal: get tweet count by state relative to the state average
-        //structure: dictionary of stateid (FIPS code) to relative count
-        var query = client.query("select stateid, cast(count(*)*(select count(distinct stateid) from tweet) as float)/cast((select count(*) from tweet) as float) as relcount from tweet group by stateid order by relcount;");
+        //goal: get tweet count per state
+        //structure: dictionary of stateid (FIPS code) to count
+        var query = client.query("select stateid, count(*) from tweet group by stateid;");
         query.on('row', function(row) {
             results.push(row);
         });
@@ -75,7 +75,7 @@ router.get('/relStateAvg', function(req, res) {
     });
 });
 
-router.get('/relCountyAvg', function(req, res) {
+router.get('/countyCounts', function(req, res) {
     var results = [];
     pg.connect(connectionString, function(err, client, done) {
         if(err) {
@@ -84,9 +84,9 @@ router.get('/relCountyAvg', function(req, res) {
           return res.status(500).json({ success: false, data: err});
         }
         
-        //goal: get tweet count by county relative to the county average
-        //structure: dictionary of countyid (FIPS code) to relative count
-        var query = client.query("select countyid, cast(count(*)*(select count(distinct countyid) from tweet) as float)/cast((select count(*) from tweet) as float) as relcount from tweet group by countyid order by relcount;");
+        //goal: get tweet count per state
+        //structure: dictionary of countyid (FIPS code) to count
+        var query = client.query("select countyid, count(*) from tweet group by countyid;");
         query.on('row', function(row) {
             results.push(row);
         });

@@ -1,13 +1,14 @@
 /* GLOBAL VARIABLES */
+"use strict";
 
 //currently selected state, county
 var selectedStateID = 0, selectedCountyID = 0;
 
-//indices
-var i, sid, cid;
-
 //id mappings
 var idToName = {};
+var idToPopulationDensity = {};
+var idToStateTweetDensity = {};
+var idToCountyTweetDensity = {};
 
 //constants
 var infoBox, infoWidth = 300;
@@ -42,6 +43,9 @@ var projection, path, svg, g, gPins;
 queue()
     .defer(d3.json, 'http://localhost:3000/data/us.json')
     .defer(d3.csv, 'http://localhost:3000/data/us-fips-codes.csv')
+    .defer(d3.csv, 'http://localhost:3000/data/census.csv')
+    .defer(d3.json, 'http://localhost:3000/stateCounts')
+    .defer(d3.json, 'http://localhost:3000/countyCounts')
     .await(baseMap);
 
 function countyIn50States(elem) {
@@ -49,20 +53,43 @@ function countyIn50States(elem) {
     return elem.id < 70000;
 }
 
-function baseMap(error, us, fipsVectors) {
+function baseMap(error, us, fipsVectors, censusVectors, stateCountVectors, countyCountVectors) {
     "use strict";
     if (error) { console.warn(error); }
     
     //create name mappings
-    for (i = 0; i < fipsVectors.length; i++) {
-        sid = parseInt(fipsVectors[i].state_id, 10);
-        cid = parseInt(fipsVectors[i].county_id, 10) + sid * 1000;
+    for (var i = 0; i < fipsVectors.length; i++) {
+        var sid = parseInt(fipsVectors[i].state_id, 10);
+        var cid = parseInt(fipsVectors[i].county_id, 10) + sid * 1000;
         idToName[cid] = fipsVectors[i].county;
         idToName[sid] = fipsVectors[i].state;
     }
     
-    var quantize = d3.scale.quantize()
-    .domain([0, .15])
+    //create census mappings
+    for(var i = 0; i < censusVectors.length; i++) {
+        var fipsid = parseInt(censusVectors[i].fips, 10);
+        idToPopulationDensity[fipsid] = parseFloat(censusVectors[i].density);
+    }
+    
+    //create count mappings
+    for(var i = 0; i < stateCountVectors.length; i++) {
+        var fipsid = parseInt(stateCountVectors[i].stateid, 10) * 1000;
+        idToStateTweetDensity[fipsid] = parseFloat(stateCountVectors[i].count) / idToPopulationDensity[fipsid];
+    }
+    
+    for(var i = 0; i < countyCountVectors.length; i++) {
+        var fipsid = parseInt(countyCountVectors[i].countyid, 10);
+        idToCountyTweetDensity[fipsid] = parseFloat(countyCountVectors[i].count) / idToPopulationDensity[fipsid];
+    }
+    
+    
+    
+    var stateQuantize = d3.scale.quantize()
+    .domain([d3.min(d3.values(idToStateTweetDensity)), d3.max(d3.values(idToStateTweetDensity))])
+    .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
+    
+    var countyQuantize = d3.scale.quantize()
+    .domain([d3.min(d3.values(idToCountyTweetDensity)), d3.max(d3.values(idToCountyTweetDensity))])
     .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
     
     //county shapes in 50 states
@@ -113,7 +140,9 @@ function baseMap(error, us, fipsVectors) {
         .data(countyGeoJSON)
         .enter().append("path")
         .attr("d", path)
-        .attr("class", "county-boundary "+quantize(.10))
+        .attr("class", function (d) { 
+        return  "county-boundary " + countyQuantize(idToCountyTweetDensity[d.id]); 
+    } ) 
         .on("mouseover", mouseOverMap)
         .on("mouseout", mouseOutMap)
         .on("click", clickedMap);
@@ -124,7 +153,9 @@ function baseMap(error, us, fipsVectors) {
         .data(stateGeoJSON)
         .enter().append("path")
         .attr("d", path)
-        .attr("class", "state "+quantize(.15))
+        .attr("class", function (d) {
+        return  "state " + stateQuantize(idToStateTweetDensity[d.id*1000]); 
+    } ) 
         .on("mouseover", mouseOverMap)
         .on("mouseout", mouseOutMap)
         .on("click", clickedMap);
@@ -194,6 +225,7 @@ function clickedMap(obj) {
 }
 
 function mouseOverMap(obj) {
+    "use strict";
     d3.select('.title').text(idToName[obj.id]);
     d3.selectAll('.description_1').text('clicked on a ');
     if (obj.id < 1000) {
@@ -202,19 +234,14 @@ function mouseOverMap(obj) {
     else {
         d3.selectAll('.description_2').text('county');
     }
-    
 }
 
 function mouseOutMap(obj) {
+    "use strict";
     d3.select('.title').text("Touch the map!");
     d3.selectAll('.description_1').text('');
     d3.selectAll('.description_2').text('');
 }
-
-
-var styleTooltip = function(name, description) {
-    return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
-};
 
 /* POINTS */
 
