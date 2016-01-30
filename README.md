@@ -2,9 +2,15 @@
 * clever tagline and logo
 
 # Screenshots
-* Different modes of the map
-* Tooltip for areas and tweets
+* Welcome Page
 ![initial page](public/images/initial.png)
+* Hover over Area
+![state hover page](public/images/stateHover.png) 
+* State Clicked
+![state clicked page](public/images/stateClicked.png)
+* County Clicked
+![county clicked page](public/images/countyClicked.png)
+
 
 # Why
 > This started off as an experiment in using D3 to display tweets collected from a Python script.
