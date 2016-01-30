@@ -4,7 +4,7 @@
 # Screenshots
 * Different modes of the map
 * Tooltip for areas and tweets
-[Initial page](public/images/initial.png)
+![initial page](public/images/initial.png)
 
 # Why
 > This started off as an experiment in using D3 to display tweets collected from a Python script.

@@ -49,12 +49,10 @@ queue()
     .await(baseMap);
 
 function countyIn50States(elem) {
-    "use strict";
     return elem.id < 70000;
 }
 
 function baseMap(error, us, fipsVectors, censusVectors, stateCountVectors, countyCountVectors) {
-    "use strict";
     if (error) { console.warn(error); }
     
     //create name mappings
@@ -205,7 +203,6 @@ function baseMap(error, us, fipsVectors, censusVectors, stateCountVectors, count
 /* USER INTERACTION */
 
 function clickedMap(obj) {
-    "use strict";
     if (obj) {
         if ((obj.id < 1000) && (selectedStateID !== obj.id)) {//state clicked 
             hideCounties();
@@ -225,7 +222,6 @@ function clickedMap(obj) {
 }
 
 function mouseOverMap(obj) {
-    "use strict";
     d3.select('.title').text(idToName[obj.id]);
     d3.selectAll('.description_1').text('clicked on a ');
     if (obj.id < 1000) {
@@ -237,7 +233,6 @@ function mouseOverMap(obj) {
 }
 
 function mouseOutMap(obj) {
-    "use strict";
     d3.select('.title').text("Touch the map!");
     d3.selectAll('.description_1').text('');
     d3.selectAll('.description_2').text('');
@@ -246,7 +241,6 @@ function mouseOutMap(obj) {
 /* POINTS */
 
 function plotPoints(data) {
-    "use strict";
     svg.selectAll("circle")
         .transition()
         .delay(function(d, i) { return i * 2; })
@@ -271,7 +265,6 @@ function plotPoints(data) {
 /* UI HELPERS */
 
 function zoomIntoObject(obj) {
-    "use strict";
         //get x,y
     var centroid = path.centroid(obj),
     x = centroid[0],
@@ -286,7 +279,6 @@ function zoomIntoObject(obj) {
 }
 
 function revertToInitial() {
-    "use strict";
     var x, y, k;
     //get center of us map
     x = width / 2;
@@ -310,8 +302,6 @@ function revertToInitial() {
 }
 
 function animateMap(x,y,k) {
-    "use strict";
-    
     //translate and resize map
     g.transition()
         .duration(500)
@@ -320,8 +310,6 @@ function animateMap(x,y,k) {
 }
 
 function animatePoints(x,y,k) {
-    "use strict";
-    
     //translate and resize grid map
     gPins.transition()
         .duration(500)
@@ -335,14 +323,12 @@ function animatePoints(x,y,k) {
 }
 
 function hideCounties() {
-    "use strict";
     g.selectAll("path")
         .filter(function (d) { return (d.id === selectedStateID); })
         .classed("active", false);
 }
     
 function showCounties() {
-    "use strict";
     g.selectAll("path")
         .filter(function (d) { return (d.id === selectedStateID); })
         .classed("active", true);
