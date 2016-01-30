@@ -23,13 +23,6 @@
 * Install NodeJS, link for downlaoad: https://nodejs.org/en/download/
 
 # Usage Steps
-<dl>
-  <dt>Definition list</dt>
-  <dd>Is something people use sometimes.</dd>
-
-  <dt>Markdown in HTML</dt>
-  <dd>Does *not* work **very** well. Use HTML <em>tags</em>.</dd>
-</dl>
 * The app uses data from the Twitter API, here are steps to get credential to use it:
 <dl><dd>Link to get credentials: https://apps.twitter.com/</dd></dl>
 * Notes on adding credentialsDB and credentialsTwitter
