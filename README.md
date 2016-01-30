@@ -36,7 +36,7 @@ so that people can interact with their data easier. Continue if you like.
 </dl>
 * Notes on adding credentialsDB and credentialsTwitter
 * Note to run npm install
-* Notes to run Node app
+* Notes to run Node app and postgres server
 * Notes to replace Twitter as a data source
 
 # Sources
