@@ -1,5 +1,6 @@
 # TNode
-* touch your data for the first time
+Touch your data for the first time
+
 
 # Why
 This started off as an experiment in using D3 to display tweets collected from a Python script.
@@ -19,8 +20,8 @@ so that people can interact with their data easier. Continue if you like.
 
 
 # Installation Steps
-* Install Postgres, link for download: http://www.postgresql.org/download/
-* Install NodeJS, link for downlaoad: https://nodejs.org/en/download/
+* Install Postgres, use the link to download: http://www.postgresql.org/download/
+* Install NodeJS, use the link to downlaoad: https://nodejs.org/en/download/
 
 # Usage Steps
 * The app uses data from the Twitter API, here are steps to get credentials to use it:
@@ -34,7 +35,17 @@ so that people can interact with their data easier. Continue if you like.
 <dd>7. Click Create my access token on the bottom to contine. </dd>
 <dd>8. Copy the values for these four fields into a new json file: Consumer Key, Consumer Secret, Access Token, and Access Token Secret. </dd>
 </dl>
-* Notes on adding credentialsDB and credentialsTwitter
+* The app needs a credentialsDB to access your Postgres database:
+<dl>
+<dd>1. Create a new file called credentialsDB.json. </dd>
+<dd>1. Save the file under TNode->router. </dd>
+<dd>2. Click on the Postgres application to start the PostgreSQL Server on your machine. </dd>
+<dd>3. Open psql, the command line interface for your PostgreSQL server. </dd>
+<dd>4. If your server is not password-secured, run the following command:  ALTER ROLE your_username WITH PASSWORD 'your_password'; </dd>
+<dd>5. If you haven't made a database yet,  run the following command: CREATE DATABASE your_db_name;</dd>
+<dd>6. Add a JSON dictionary with the keys: username, password and dbname, then add the values you just set. Save the JSON dictionary to the file. </dd>
+</dl>
+* Notes on adding credentialsTwitter
 * Note to run npm install
 * Notes to run Node app and postgres server
 * Notes to replace Twitter as a data source
