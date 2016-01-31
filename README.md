@@ -2,6 +2,8 @@
 Touch your data for the first time
 
 
+![Hello](https://31.media.tumblr.com/5cdc86d7ac4f2f76e2179f4828500647/tumblr_inline_n4wmdqVphI1qh2kpf.gif)
+
 # Why
 This started off as an experiment in using D3 to display tweets collected from a Python script.
 I looked for a way to see Twitter trends on a US map, nothing really tickled me.
@@ -38,17 +40,25 @@ so that people can interact with their data easier. Continue if you like.
 * The app needs a credentialsDB to access your Postgres database:
 <dl>
 <dd>1. Create a new file called credentialsDB.json. </dd>
-<dd>1. Save the file under TNode->router. </dd>
+<dd>2. Save the file under TNode->router. </dd>
 <dd>2. Click on the Postgres application to start the PostgreSQL Server on your machine. </dd>
 <dd>3. Open psql, the command line interface for your PostgreSQL server. </dd>
 <dd>4. If your server is not password-secured, run the following command:  ALTER ROLE your_username WITH PASSWORD 'your_password'; </dd>
 <dd>5. If you haven't made a database yet,  run the following command: CREATE DATABASE your_db_name;</dd>
 <dd>6. Add a JSON dictionary with the keys: username, password and dbname, then add the values you just set. Save the JSON dictionary to the file. </dd>
 </dl>
-* Notes on adding credentialsTwitter
-* Note to run npm install
-* Notes to run Node app and postgres server
-* Notes to replace Twitter as a data source
+* To run the app, you have to start the server.js file:
+* <dl>
+<dd>1. Open terminal and cd into the TNode directory. </dd>
+<dd>2. To setup nodemon on your machine, run the following command: npm install -g nodemon </dd>
+<dd>3. To start the server, run the following command: nodemon server.js </dd>
+<dd>4. If it all succeeds, the terminal will say 'the api is running'. </dd>
+</dl>
+
+# Contributing
+Help me improve this project.
+If you woudl like to submit some changes, send up a pull request.
+For any questions, comments, or concerns, please send me a message at pjkedilaya@gmail.com
 
 # Sources
 * Adjusting Points on Zoom: http://jsfiddle.net/o3dxgfuu/12/
