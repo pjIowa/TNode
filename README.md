@@ -48,7 +48,7 @@ so that people can interact with their data easier. Continue if you like.
 <dd>6. Add a JSON dictionary with the keys: username, password and dbname, then add the values you just set. Save the JSON dictionary to the file. </dd>
 </dl>
 * To run the app, you have to start the server.js file:
-* <dl>
+<dl>
 <dd>1. Open terminal and cd into the TNode directory. </dd>
 <dd>2. To setup nodemon on your machine, run the following command: npm install -g nodemon </dd>
 <dd>3. To start the server, run the following command: nodemon server.js </dd>
@@ -56,9 +56,7 @@ so that people can interact with their data easier. Continue if you like.
 </dl>
 
 # Contributing
-Help me improve this project.
-If you woudl like to submit some changes, send up a pull request.
-For any questions, comments, or concerns, please send me a message at pjkedilaya@gmail.com
+This project can use your help. If you would like to submit some changes, submit a pull request. For any questions, comments, or concerns, please send me a message at pjkedilaya@gmail.com
 
 # Sources
 * Adjusting Points on Zoom: http://jsfiddle.net/o3dxgfuu/12/
