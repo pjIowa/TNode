@@ -23,7 +23,7 @@ so that people can interact with their data easier. Continue if you like.
 
 # Installation Steps
 * Install Postgres, use the link to download: http://www.postgresql.org/download/
-* Install NodeJS, use the link to downlaoad: https://nodejs.org/en/download/
+* Install NodeJS, use the link to download: https://nodejs.org/en/download/
 
 # Usage Steps
 * The app uses data from the Twitter API, here are steps to get credentials to use it:
@@ -33,9 +33,12 @@ so that people can interact with their data easier. Continue if you like.
 <dd>3. Click on Create New App to continue.</dd>
 <dd>4. Fill out the fields for your app and agree to the Developer Agreement. </dd>
 <dd>5. Click on Create your Twitter application to continue. </dd>
-<dd>6. Click to view the tab the Keys and Access Tokens for the app. </dd>
-<dd>7. Click Create my access token on the bottom to contine. </dd>
-<dd>8. Copy the values for these four fields into a new json file: Consumer Key, Consumer Secret, Access Token, and Access Token Secret. </dd>
+<dd>6. Click to view the tab called Keys and Access Tokens for the app. </dd>
+<dd>7. Click Create my access token on the bottom to continue. </dd>
+<dd>7. Create a new file called credentialsTwitter.json. </dd>
+<dd>8. Save the file under TNode->router. </dd>
+<dd>9. Add a JSON dictionary with the keys: Consumer_Key, Consumer_Secret, Access_Token, and Access_Token_Secret. Then set the values for these keys into the dictionary. Use the tab on Twitter as reference. </dd>
+<dd>10. Save the JSON dictionary to the file. </dd>
 </dl>
 * The app needs a credentialsDB to access your Postgres database:
 <dl>
@@ -45,7 +48,8 @@ so that people can interact with their data easier. Continue if you like.
 <dd>3. Open psql, the command line interface for your PostgreSQL server. </dd>
 <dd>4. If your server is not password-secured, run the following command:  ALTER ROLE your_username WITH PASSWORD 'your_password'; </dd>
 <dd>5. If you haven't made a database yet,  run the following command: CREATE DATABASE your_db_name;</dd>
-<dd>6. Add a JSON dictionary with the keys: username, password and dbname, then add the values you just set. Save the JSON dictionary to the file. </dd>
+<dd>6. Add a JSON dictionary with the keys: username, password and dbname. Then set the values for these keys into the dictionary as you set before.</dd>
+<dd>7. Save the JSON dictionary to the file. </dd>
 </dl>
 * To run the app, you have to start the server.js file:
 <dl>
