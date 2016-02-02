@@ -96,7 +96,7 @@ text {
 
 /* SEARCH BAR */
 
-.tftextinput2{
+.searchbar {
 	margin: 0;
 	padding: 5px 15px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -107,7 +107,7 @@ text {
 	border-bottom-left-radius: 5px 5px;
 }
 
-.tfbutton2 {
+.searchbutton {
 	margin: 0;
 	padding: 5px 7px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -126,7 +126,7 @@ text {
 	border-bottom-right-radius: 5px 5px;
 }
 
-.tfbutton2:hover {
+.searchbutton:hover {
 	text-decoration: none;
 	background: #007ead;
 	background: -webkit-gradient(linear, left top, left bottom, from(#0095cc), to(#00678e));

@@ -8,7 +8,7 @@ head
  script(src="/js/index.js")
  link(href='/css/index.css', rel='stylesheet')
 body
- form#tfnewsearch(method='get', action='/')
-  input#tfq2b.tftextinput2(type='text', name='q', size='21', maxlength='120', value='Search on Tweets')
-  input.tfbutton2(type='submit', value='>')
+ form(method='get', action='/')
+  input.searchbar(type='text', name='q', size='21', maxlength='120', value='Search on Tweets')
+  input.searchbutton(type='submit', value='>')
  div#map
