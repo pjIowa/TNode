@@ -7,7 +7,7 @@ Touch your data for the first time
 # Why
 This started off as an experiment in using D3 to display tweets collected from a Python script.
 I looked for a way to see Twitter trends on a US map, nothing really tickled me.
-Over time, I added features requiring a true server, settling on NodeJS.  I made it a web framework
+Over time, I added features requiring a true server, settling on NodeJS for the backend.  I made it a web framework
 so that people can interact with their data easier. Continue if you like.
 
 # Screenshots
@@ -60,7 +60,7 @@ so that people can interact with their data easier. Continue if you like.
 </dl>
 
 # Contributing
-This project can use your help. If you would like to submit some changes, submit a pull request. For any questions, comments, or concerns, please send me a message at pjkedilaya@gmail.com
+This project can use your help. Submit a pull request or open an issue to get started. For any questions, comments, or concerns, please send me a message at pjkedilaya@gmail.com
 
 # Sources
 * Adjusting Points on Zoom: http://jsfiddle.net/o3dxgfuu/12/
