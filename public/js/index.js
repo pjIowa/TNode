@@ -212,6 +212,7 @@ function clickedMap(obj) {
         } else if (selectedCountyID !== obj.id) {//county clicked
             selectedCountyID = obj.id;
             zoomIntoObject(obj);
+            getPointsForCountyId(selectedCountyID);
         } else {//county clicked twice
             hideCounties();
             revertToInitial();
@@ -240,6 +241,12 @@ function mouseOutMap(obj) {
 
 /* POINTS */
 
+function getPointsForCountyId(countyId) {
+    $.post("http://localhost:3000/tweets", {idParam: countyId}, function(data, status){
+        console.log(data);
+    });
+}
+
 function plotPoints(data) {
     svg.selectAll("circle")
         .transition()
@@ -259,8 +266,6 @@ function plotPoints(data) {
         .delay(function(d, i) { return i * 5; })
         .attr("r", 1.0 );
 }
-
-
 
 /* UI HELPERS */
 

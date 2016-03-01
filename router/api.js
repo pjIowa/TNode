@@ -3,6 +3,7 @@ var express = require('express');
 var pg = require('pg');
 var path = require('path');
 var fs = require('fs');
+var qs = require('querystring');
 
 //Create Router
 var router = express.Router();
@@ -95,6 +96,38 @@ router.get('/countyCounts', function(req, res) {
             return res.json(results);
         });
     });
+});
+
+router.post('/tweets', function(req, res) {
+    if (req.body.length > 1e6) {
+        req.connection.destroy();
+    }
+    
+    var results = [];
+    var countyId = req.body.idParam
+    if (parseInt(countyId) == NaN) {
+        return res.json(results);
+    }
+    else {
+        pg.connect(connectionString, function(err, client, done) {
+            if(err) {
+                done();
+                console.log(err);
+                return res.status(500).json({ success: false, data: err});
+            }
+            
+            //goal: get tweets in a specific county
+            //structure: array of tweet dictionaries
+            var query = client.query("select * from tweet where countyid in ("+countyId+");");
+            query.on('row', function(row) {
+                results.push(row);
+            });
+            query.on('end', function() {
+                done();
+                return res.json(results);
+            });
+        });
+    }
 });
 
 //Provide router

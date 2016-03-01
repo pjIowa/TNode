@@ -16,6 +16,7 @@
     "kerberos": "0.0.17",
     "path": "^0.12.7",
     "pg": "^4.4.3",
+    "querystring": "^0.2.0",
     "serve-favicon": "^2.3.0"
   }
 }
