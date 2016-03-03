@@ -1,8 +1,5 @@
 # TNode
-Touch your data for the first time
-
-
-![Hello](https://31.media.tumblr.com/5cdc86d7ac4f2f76e2179f4828500647/tumblr_inline_n4wmdqVphI1qh2kpf.gif)
+Touch your data for the first time!
 
 # Why
 This started off as an experiment in using D3 to display tweets collected from a Python script.
@@ -10,15 +7,13 @@ I looked for a way to see Twitter trends on a US map, nothing really tickled me.
 Over time, I added features requiring a true server, settling on NodeJS for the backend.  I made it a web framework
 so that people can interact with their data easier. Continue if you like.
 
-# Screenshots
-* Welcome Page
-![initial page](public/images/initial.png)
-* Hover over Area
-![state hover page](public/images/stateHover.png) 
-* State Clicked
-![state clicked page](public/images/stateClicked.png)
-* County Clicked
-![county clicked page](public/images/countyClicked.png)
+# Overview
+### Hover over State
+![state hover page](public/images/hover.gif) 
+### State Clicked
+![state clicked page](public/images/stateClick.gif)
+### County Clicked
+![county clicked page](public/images/countyClick.gif)
 
 
 # Installation Steps
