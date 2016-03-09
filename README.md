@@ -6,7 +6,7 @@ This started off as an experiment in using D3 to display tweets collected from a
 I looked for a way to see Twitter trends on a US map, nothing really tickled me.
 Over time, I added features requiring a true server, settling on NodeJS for the backend.  I made it a web framework
 so that people can interact with their data easier. Continue if you like.
-
+ 
 # Overview
 ### Hover over State
 ![state hover page](public/images/hover.gif) 
